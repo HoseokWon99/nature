@@ -113,7 +113,7 @@ Responsibilities:
 Owns `~/.nature/nature-config.json`.
 
 - `model.py`: Pydantic options models with field constraints, enum values, path validators, and cross-field validators.
-- `loader.py`: Read JSON, call the Pydantic root options model, create fixed internal paths, and return `NatureOptions`.
+- `loader.py`: Read JSON, call the Pydantic root options model, create fixed internal paths, and return `Options`.
 
 Fixed paths such as `~/.nature` and `~/.nature/cache` should be defined here or in `core.paths`, but they should not be user-configurable.
 

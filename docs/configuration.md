@@ -118,7 +118,7 @@ The vector database path should usually live outside the Obsidian vault because 
 Configuration loading should parse JSON into Pydantic models before any pipeline runs. Validation should live with the options models, not in a separate validation layer.
 
 1. `~/.nature/nature-config.json` exists and parses as JSON.
-2. `NatureOptions.model_validate_json(...)` validates the parsed shape.
+2. `Options.model_validate_json(...)` validates the parsed shape.
 3. Required sections and fields are enforced by Pydantic model fields.
 4. Enums are represented with `Literal` or `Enum` types.
 5. Numeric ranges use Pydantic field constraints.
@@ -134,7 +134,7 @@ Recommended model ownership:
 
 ```text
 nature.config.model
-├── NatureOptions
+├── Options
 ├── WorkspaceOptions
 ├── ParsingOptions
 ├── WikiOptions
@@ -143,7 +143,7 @@ nature.config.model
 └── RetrieverOptions
 ```
 
-`nature.config.loader` should only read JSON, call the Pydantic model, create fixed internal directories, and return `NatureOptions`.
+`config.loader` should only read JSON, call the Pydantic model, create fixed internal directories, and return `Options`.
 
 ## Pipeline Usage
 

@@ -160,7 +160,7 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from nature.config.model import NatureOptions
+from config.model import Options
 
 
 def valid_config(vault: Path) -> dict:
@@ -205,7 +205,7 @@ def valid_config(vault: Path) -> dict:
 
 
 def test_valid_config_expands_vault_path(tmp_path: Path):
-    config = NatureOptions.model_validate(valid_config(tmp_path))
+    config = Options.model_validate(valid_config(tmp_path))
     assert config.workspace.vault_path == tmp_path
 
 
@@ -214,7 +214,7 @@ def test_invalid_overwrite_policy_fails(tmp_path: Path):
     data["wiki"]["overwrite_policy"] = "replace"
 
     with pytest.raises(ValidationError):
-        NatureOptions.model_validate(data)
+        Options.model_validate(data)
 ```
 
 - [ ] **Step 2: Run tests and verify failure**
@@ -303,7 +303,7 @@ class RetrieverOptions(BaseModel):
     include_excerpt: bool
 
 
-class NatureOptions(BaseModel):
+class Options(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["1.0"]
@@ -321,7 +321,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from nature.config.model import NatureOptions
+from config.model import Options
 from nature.core.errors import InvalidConfig
 
 CONFIG_PATH = Path("~/.nature/nature-config.json").expanduser()
@@ -329,10 +329,10 @@ STATE_DIR = Path("~/.nature").expanduser()
 CACHE_DIR = STATE_DIR / "cache"
 
 
-def load_config(path: Path = CONFIG_PATH) -> NatureOptions:
+def load_config(path: Path = CONFIG_PATH) -> Options:
     try:
         raw = path.expanduser().read_text(encoding="utf-8")
-        config = NatureOptions.model_validate_json(raw)
+        config = Options.model_validate_json(raw)
     except (OSError, ValidationError) as error:
         raise InvalidConfig(str(error)) from error
 
@@ -345,9 +345,9 @@ def load_config(path: Path = CONFIG_PATH) -> NatureOptions:
 ```python
 # src/nature/config/__init__.py
 from nature.config.loader import CACHE_DIR, CONFIG_PATH, STATE_DIR, load_config
-from nature.config.model import NatureOptions
+from config.model import Options
 
-__all__ = ["CACHE_DIR", "CONFIG_PATH", "STATE_DIR", "NatureOptions", "load_config"]
+__all__ = ["CACHE_DIR", "CONFIG_PATH", "STATE_DIR", "Options", "load_config"]
 ```
 
 - [ ] **Step 4: Run tests and verify pass**

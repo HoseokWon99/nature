@@ -32,6 +32,7 @@
 ## Conventions
 
 1. For functions, classes, methods, the exported come before the unexported
+2. Constants are unexported by default unless they are part of a public API.
 
 ## Rules
 
